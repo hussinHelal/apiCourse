@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('secret')->nullable();
             $table->string('provider')->nullable();
-            $table->text('redirect_uris');
+            $table->json('redirect_uris');
             $table->text('grant_types');
             $table->boolean('revoked');
             $table->timestamps();

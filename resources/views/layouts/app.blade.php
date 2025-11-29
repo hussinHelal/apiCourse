@@ -34,6 +34,12 @@
                          <li class="nav-item">
                             <a class="nav-link" href=" {{ route('tokens.index') }}"> my_tokens </a>
                          </li>
+                         <li class="nav-item">
+                            <a class="nav-link" href=" {{ route('authorizedClients') }}"> authorized_clients </a>
+                         </li>
+                         <li class="nav-item">
+                            <a class="nav-link" href=" {{ route('clients-list') }}"> create_clients </a>
+                         </li>
                     </ul>
                         @endauth
                     <!-- Right Side Of Navbar -->

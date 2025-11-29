@@ -44,6 +44,15 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::middleware('auth')->group(function () {
     Route::get('/personal-tokens', [PersonalTokenController::class, 'index'])->name('tokens.index');
+    Route::get('/authorized-clients', [PersonalTokenController::class, 'authorizedClients'])->name('authorizedClients');
+    Route::get('/authorized-clients/{tokenId}', [PersonalTokenController::class, 'revokeClient'])->name('authorizedClients.destroy');
     Route::post('/personal-tokens', [PersonalTokenController::class, 'store'])->name('tokens.store');
     Route::delete('/personal-tokens/{tokenId}', [PersonalTokenController::class, 'destroy'])->name('tokens.destroy');
+
+    Route::get('/list-clients', [PersonalTokenController::class, 'clients'])->name('clients-list');
+    Route::post('/store-clients', [PersonalTokenController::class, 'storeClient'])->name('clients-store');
+    Route::put('/update-clients/{clientId}', [PersonalTokenController::class, 'updateClient'])->name('clients-update');
+    Route::delete('/destroy-clients/{clientId}', [PersonalTokenController::class, 'destroyClient'])->name('clients-destroy');
+    Route::put('/secret-clients/{clientId}/secret', [PersonalTokenController::class, 'regenerateSecret'])->name('clients-secret');
+
 });

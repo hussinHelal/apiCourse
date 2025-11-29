@@ -23,6 +23,9 @@ use Laravel\Passport\Passport;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Laravel\Passport\Contracts\AuthorizationViewResponse;
+use App\Http\Responses\AuthorizationViewResponse as CustomAuthorizationViewResponse;
+
 
 
 class AppServiceProvider extends ServiceProvider
@@ -44,6 +47,11 @@ class AppServiceProvider extends ServiceProvider
         Passport::tokensExpireIn(now()->addDays(15));
         Passport::refreshTokensExpireIn(now()->addDays(30));
         Passport::personalAccessTokensExpireIn(now()->addMonths(6));
+
+         $this->app->bind(
+        AuthorizationViewResponse::class,
+        CustomAuthorizationViewResponse::class
+        );
 
         RateLimiter::for('api', function (Request $request) {
         return Limit::perMinute(20)
