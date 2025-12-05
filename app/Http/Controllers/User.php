@@ -26,7 +26,7 @@ class User extends apiController
     {
         return ['api', 'users'];
     }
-   
+
     public function index()
     {
         $users = usr::all();
@@ -47,6 +47,7 @@ class User extends apiController
      */
     public function store(Request $request)
     {
+        LOG::info('Store method called for user creation');
          try {
             $validate = $request->validate([
                 'name' => 'required',
@@ -64,11 +65,10 @@ class User extends apiController
         $data = $validate;
         $data['password'] = bcrypt($request->password);
         $data['verified'] = Usr::UNVERIFIED_USER;
-        $data['verification_token'] = Usr::generateVerificationCode();
         $data['admin'] = Usr::REGULAR_USER;
-
+        $data['verification_token'] = Usr::generateVerificationCode();
+        Log::info('Generated verification token before creation');
         $user = Usr::create($data);
-
 
         Log::info('User created successfully: ' . $user->id);
 
@@ -138,7 +138,7 @@ class User extends apiController
             $user->password = bcrypt( $request->password );
         }
 
-        
+
         if(!$user->isDirty())
         {
             return response()->json(['error'=> 'you need to send different values to update','code'=> 422],422);

@@ -25,8 +25,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Laravel\Passport\Contracts\AuthorizationViewResponse;
 use App\Http\Responses\AuthorizationViewResponse as CustomAuthorizationViewResponse;
-
-
+use Laravel\Passport\Events\AccessTokenCreated;
+use Laravel\framework\Support\Facades\Event;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -73,22 +73,37 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
-        User::created(function ($user) {
-            retry(5, function () use ($user) {
-            try {
-                Mail::to($user->email)->queue(new TestMail($user));
-            } catch (\Exception $e) {
-                Log::error('Failed to send welcome email to user ID ' . $user->id . ': ' . $e->getMessage());
-            }
-        }, 200);
-        });
+
+
+        // User::created(function ($user) {
+        //     retry(5, function () use ($user) {
+        //     try {
+        //             Log::info('CREATED event fired for user: ' . $user->id);
+
+        //             // $user->verification_token = User::generateVerificationCode();
+        //             // Log::info('Generated verification token: ');
+        //             //  $user->saveQuietly();
+        //             // $user->save();
+        //             Mail::to($user->email)->queue(new TestMail($user));
+
+        //     } catch (\Exception $e) {
+        //         Log::error('Failed to send welcome email to user ID ' . $user->id . ': ' . $e->getMessage());
+        //     }
+        // }, 200);
+        // });
 
         User::updated(function ($user) {
             retry(5, function () use ($user) {
             try {
+
+                // Log::info('UPDATED event fired for user: ' . $user->id);
+                // Log::info('Dirty attributes: ' . json_encode($user->getDirty()));
+                // if($user->verified == User::UNVERIFIED_USER) {
+                //     Log::info('User is verified, no email change needed.');
                 if ($user->isDirty('email')) {
                     Mail::to($user->email)->queue(new userMailChanged($user));
                 }
+            // }
             } catch (\Exception $e) {
                 Log::error('Failed to send email change confirmation to user ID ' . $user->id . ': ' . $e->getMessage());
             }
