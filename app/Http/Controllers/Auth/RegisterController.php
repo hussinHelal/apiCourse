@@ -71,7 +71,7 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
-    protected function create(array $data)
+    protected function create(array $data)  
     {
 <<<<<<< HEAD
        Log::info('Registration create method called');
@@ -87,6 +87,7 @@ class RegisterController extends Controller
             'admin' => User::REGULAR_USER,
         ]);
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         Log::info('User created successfully: ' . $user->id);
         Log::info('Verification token: ');
@@ -95,12 +96,16 @@ class RegisterController extends Controller
 =======
          $token = User::generateVerificationCode(); 
     
+=======
+         $token = User::generateVerificationCode();
+
+>>>>>>> 1d32c16 (just commit dude wth)
         $user->verification_token = $token;
         $user->save();
-        
-        
+
+
         return response()->json([
-            'message' => 'User registered. Please check your email to verify.'
+            'message' => 'User registered. Please check your email to verify.' ,
         ]);
 
 >>>>>>> f0bb797 (fix verification)
