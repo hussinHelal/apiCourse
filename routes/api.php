@@ -115,18 +115,8 @@ Route::get('user/verify/{token}' , [User::class, 'verify'])->name('verify');
 
 Route::get('user/{user}/resend' , [User::class, 'resendVerification'])->name('resend');
 
-<<<<<<< HEAD
 
-});
-
-Route::get('user/verify/{token}' , [User::class, 'verify'])->name('verify');
-
-Route::get('user/{user}/resend' , [User::class, 'resendVerification'])->name('resend');
-
-Route::resource("user",User::class)->middleware('auth:api');
-=======
 // Route::resource("user",User::class)->middleware('auth:api');
->>>>>>> f0bb797 (fix verification)
 
 Route::post('oauth/token',[AccessTokenController::class,'issueToken'])->middleware(['client','auth:api']);
 

@@ -7,16 +7,11 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
-
-
-=======
 use App\Mail\TestMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
->>>>>>> f0bb797 (fix verification)
 
 class RegisterController extends Controller
 {
@@ -71,13 +66,10 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
-    protected function create(array $data)  
+    protected function create(array $data)
     {
-<<<<<<< HEAD
        Log::info('Registration create method called');
 
-=======
->>>>>>> f0bb797 (fix verification)
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -86,28 +78,20 @@ class RegisterController extends Controller
             'verification_token' => User::generateVerificationCode(),
             'admin' => User::REGULAR_USER,
         ]);
-<<<<<<< HEAD
-<<<<<<< HEAD
-
         Log::info('User created successfully: ' . $user->id);
         Log::info('Verification token: ');
 
         return $user;
-=======
-         $token = User::generateVerificationCode(); 
-    
-=======
-         $token = User::generateVerificationCode();
 
->>>>>>> 1d32c16 (just commit dude wth)
-        $user->verification_token = $token;
-        $user->save();
+        //  $token = User::generateVerificationCode();
+
+        // $user->verification_token = $token;
+        // $user->save();
 
 
-        return response()->json([
-            'message' => 'User registered. Please check your email to verify.' ,
-        ]);
+        // return response()->json([
+        //     'message' => 'User registered. Please check your email to verify.' ,
+        // ]);
 
->>>>>>> f0bb797 (fix verification)
     }
 }
