@@ -189,6 +189,7 @@ class User extends apiController
 
     public function verify($token)
     {
+        Log::info('Verification attempt  ' );
         $user = Usr::where('verification_token', $token)->firstOrFail();
 
         $user->verified = Usr::VERIFIED_USER;

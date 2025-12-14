@@ -73,6 +73,7 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
+<<<<<<< HEAD
 
 
         // User::created(function ($user) {
@@ -91,6 +92,18 @@ class AppServiceProvider extends ServiceProvider
         //     }
         // }, 200);
         // });
+=======
+        User::created(function ($user) {
+            retry(5, function () use ($user) {
+            try {
+                
+                Mail::to($user->email)->queue(new TestMail($user));
+            } catch (\Exception $e) {
+                Log::error('Failed to send welcome email to user ID ' . $user->id . ': ' . $e->getMessage());
+            }
+        }, 200);
+        });
+>>>>>>> f0bb797 (fix verification)
 
         User::updated(function ($user) {
             retry(5, function () use ($user) {
