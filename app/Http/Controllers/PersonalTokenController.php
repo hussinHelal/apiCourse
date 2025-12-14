@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Laravel\Passport\Passport;
+use Illuminate\Support\Facades\Log;
 
 class PersonalTokenController extends Controller
 {
@@ -106,11 +107,12 @@ class PersonalTokenController extends Controller
 
     public function updateClient(Request $request, $clientId)
     {
+        Log::info('Updating client');
        $request->validate([
         'name' => 'required|string|max:255',
         'redirect' => 'required|url',
         ]);
-
+       Log::info('client update validated');
         $client = \Laravel\Passport\Client::where('owner_id', auth()->id())
             ->where('owner_type', get_class(auth()->user()))
             ->where('id', $clientId)
@@ -118,7 +120,7 @@ class PersonalTokenController extends Controller
 
         $client->update([
             'name' => $request->name,
-            'redirect' => [$request->redirect],
+            'redirect_uris' => [$request->redirect],
         ]);
 
         return redirect()->back()->with('success', 'Client updated successfully');
