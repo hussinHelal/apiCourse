@@ -30,6 +30,13 @@ return [
 
     'public_key' => env('PASSPORT_PUBLIC_KEY'),
 
+
+    'scopes' => [
+        'purchase-product' => 'Purchase Product',
+        'manage-products' => 'Create, read, update, delete products',
+        'manage-account' => 'Read and write user account data',
+        'read-general' => 'Read general information',
+    ],
     /*
     |--------------------------------------------------------------------------
     | Passport Database Connection

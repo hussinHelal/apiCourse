@@ -10,6 +10,9 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Session\TokenMismatchException;
 // use Laravel\Passport\Http\Middleware\EnsureClientIsResourceOwner;
+use Illuminate\Auth\AuthenticationException;
+
+
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -25,12 +28,12 @@ return Application::configure(basePath: dirname(__DIR__))
            $middleware->web(append: [
             \App\Http\Middleware\HandleInertiaRequests::class,
         ]);
-        
+
         $middleware->api(prepend: [
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ]);
-        
+
         // // Middleware aliases
         // $middleware->alias([
         //     'auth' => \App\Http\Middleware\Authenticate::class,
@@ -39,7 +42,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // ]);
         $middleware->alias([
             'signature' => \App\Http\Middleware\SignatureMiddleware::class,
-             'client' => \Laravel\Passport\Http\Middleware\EnsureClientIsResourceOwner::class,
+            'client' => \Laravel\Passport\Http\Middleware\EnsureClientIsResourceOwner::class,
         ]);
         // // Configure throttling
         $middleware->throttleApi();
@@ -66,6 +69,15 @@ return Application::configure(basePath: dirname(__DIR__))
                     'message' => 'The given data was invalid.',
                     'errors' => $e->errors(),
                 ], 422);
+            }
+        });
+
+        $exceptions->render(function (AuthenticationException $e, Request $request) {
+            if ($request->is('api/*') || $request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Unauthenticated.',
+                    'error' => 'authentication_required'
+                ], 401);
             }
         });
 

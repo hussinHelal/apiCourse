@@ -8,6 +8,12 @@ use Illuminate\Auth\Access\Response;
 
 class SellerPolicy
 {
+    public function before(User $user, $ability)
+    {
+        if ($user->isAdmin()) {
+            return Response::allow();
+        }
+    }
     /**
      * Determine whether the user can view any models.
      */
@@ -19,9 +25,32 @@ class SellerPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Seller $seller): bool
+    public function view(User $user, Seller $seller): Response
     {
-        return false;
+        return $user->id === $seller->user_id
+            ? Response::allow()
+            : Response::deny('You do not own this seller.');
+    }
+
+    public function sale(User $user, User $seller): Response
+    {
+        return $user->id === $seller->user_id
+            ? Response::allow()
+            : Response::deny('You do not own this seller.');
+    }
+
+    public function editProduct(User $user, Seller $seller): Response
+    {
+        return $user->id === $seller->user_id
+            ? Response::allow()
+            : Response::deny('You do not own this seller.');
+    }
+
+    public function deleteProduct(User $user, Seller $seller): Response
+    {
+        return $user->id === $seller->user_id
+            ? Response::allow()
+            : Response::deny('You do not own this seller.');
     }
 
     /**

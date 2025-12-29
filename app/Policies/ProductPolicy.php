@@ -8,6 +8,23 @@ use Illuminate\Auth\Access\Response;
 
 class ProductPolicy
 {
+    public function before(User $user, $ability)
+    {
+        if ($user->isAdmin()) {
+            return Response::allow();
+        }
+    }
+
+    public function addCategory(User $user, Product $product)
+    {
+        return $user->id === $product->seller_id;
+    }
+
+    public function deleteCategory(User $user, Product $product)
+    {
+        return $user->id === $product->seller_id;
+    }
+
     /**
      * Determine whether the user can view any models.
      */

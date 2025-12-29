@@ -55,4 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/destroy-clients/{clientId}', [PersonalTokenController::class, 'destroyClient'])->name('clients-destroy');
     Route::put('/secret-clients/{clientId}/secret', [PersonalTokenController::class, 'regenerateSecret'])->name('clients-secret');
 
+    Route::get('/callback',function(){
+        return view('callback');
+    })->name('callback');
 });

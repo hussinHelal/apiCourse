@@ -8,6 +8,13 @@ use Illuminate\Auth\Access\Response;
 
 class TransactionsPolicy
 {
+    public function before(User $user, $ability)
+    {
+        if ($user->isAdmin()) {
+            return Response::allow();
+        }
+    }
+    /**
     /**
      * Determine whether the user can view any models.
      */
@@ -21,7 +28,7 @@ class TransactionsPolicy
      */
     public function view(User $user, Transactions $transactions): bool
     {
-        return false;
+        return $user->id === $transactions->buyer_id || $user->id === $transactions->product->seller->id;
     }
 
     /**

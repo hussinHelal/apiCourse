@@ -6,6 +6,7 @@ use App\Models\Buyer;
 use App\Http\Requests\StoreBuyerRequest;
 use App\Http\Requests\UpdateBuyerRequest;
 use App\Data\BuyerData;
+use Illuminate\Support\Facades\Log;
 class BuyerController extends apiController
 {
 
@@ -16,6 +17,7 @@ class BuyerController extends apiController
 
     public function index()
     {
+        
         $buyer = Buyer::has('transactions')->get();
         return $this->showAll($buyer,200,BuyerData::class);
     }
@@ -41,6 +43,10 @@ class BuyerController extends apiController
      */
     public function show(Buyer $buyer)
     {
+        Log::info('Controller show', [
+        'buyer' => $buyer,
+        'auth_user' => auth()->user()
+    ]);
         // $buyer = Buyer::has('transactions')->find($id);
         $buyer = BuyerData::from($buyer);
         if(!$buyer){

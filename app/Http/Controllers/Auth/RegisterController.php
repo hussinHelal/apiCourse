@@ -79,7 +79,6 @@ class RegisterController extends Controller
             'admin' => User::REGULAR_USER,
         ]);
         Log::info('User created successfully: ' . $user->id);
-        Log::info('Verification token: ');
 
         return $user;
 

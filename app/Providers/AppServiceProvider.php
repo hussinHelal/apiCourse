@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Policies\BuyerPolicy;
+use App\Policies\SellerPolicy;
+use App\Policies\UserPolicy;
+use App\Policies\ProductPolicy;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Buyer;
@@ -27,6 +31,7 @@ use Laravel\Passport\Contracts\AuthorizationViewResponse;
 use App\Http\Responses\AuthorizationViewResponse as CustomAuthorizationViewResponse;
 use Laravel\Passport\Events\AccessTokenCreated;
 use Laravel\framework\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -43,6 +48,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
         Passport::enablePasswordGrant();
         Passport::tokensExpireIn(now()->addDays(15));
         Passport::refreshTokensExpireIn(now()->addDays(30));
@@ -57,6 +63,13 @@ class AppServiceProvider extends ServiceProvider
         return Limit::perMinute(20)
                 ->by($request->user()?->id ?: $request->ip());
         });
+
+        Passport::tokensCan([
+            'purchase-product' => 'Purchase Product',
+            'manage-products' => 'Create, read, update, delete products',
+            'manage-account' => 'Read and write user account data',
+            'read-general' => 'Read general information',
+        ]);
 
 
         $this->loadViewsFrom(__DIR__.'/../../resources/views', 'mail');

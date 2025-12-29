@@ -148,7 +148,7 @@
                                                 </td>
                                                 <td>
                                                     <small class="text-muted">
-                                                        {{ Str::limit($client->redirect, 40) }}
+                                                        {{ Str::limit($client->redirect_uri, 40) }}
                                                     </small>
                                                 </td>
                                                 <td>
@@ -207,7 +207,7 @@
                                                                     <input type="url"
                                                                            class="form-control"
                                                                            name="redirect"
-                                                                           value="{{ $client->redirect }}"
+                                                                           value="{{ $client->redirect_uri }}"
                                                                            required>
                                                                 </div>
                                                             </div>
